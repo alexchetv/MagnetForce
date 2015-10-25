@@ -64,11 +64,11 @@ namespace Shell.Models
             get { return GetValue<ObservableCollection<Magnet>>(MagnetsProperty); }
             set { SetValue(MagnetsProperty, value); }
         }
-
         /// <summary>
         /// Register the Magnets property so it is known in the class.
         /// </summary>
         public static readonly PropertyData MagnetsProperty = RegisterProperty("Magnets", typeof(ObservableCollection<Magnet>), null);
+        
         #endregion
 
         #region Methods
