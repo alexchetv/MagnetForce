@@ -6,6 +6,18 @@
               Height="400"
               ResizeMode="CanResize">
 
-    <Grid />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="27*" />
+            <RowDefinition Height="158*" />
+        </Grid.RowDefinitions>
+        <Button x:Name="button"
+                Width="75"
+                Margin="26,10,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding AddMagnet}"
+                Content="Add from Library" />
+    </Grid>
 
 </catel:Window>
