@@ -3,21 +3,33 @@
     using Catel.MVVM;
     using System.Threading.Tasks;
     using Catel.Data;
+    using Catel.Services;
     using Models;
     using System.Collections.ObjectModel;
 
     public class MainWindowViewModel : ViewModelBase
     {
-        public MainWindowViewModel()
+        private readonly IUIVisualizerService _uiVisualizerService;
+        private readonly IPleaseWaitService _pleaseWaitService;
+        private readonly IMessageService _messageService;
+        private readonly IOpenFileService _openFileService;
+
+        public MainWindowViewModel(IUIVisualizerService uiVisualizerService, IPleaseWaitService pleaseWaitService, IMessageService messageService, IOpenFileService openFileService)
         {
+            _uiVisualizerService = uiVisualizerService;
+            _pleaseWaitService = pleaseWaitService;
+            _messageService = messageService;
+            _openFileService = openFileService;
+
+            AddMagnet = new Command(OnAddMagnetExecuteAsync);
+            EditMagnet = new Command(OnEditMagnetExecuteAsync, OnEditMagnetCanExecute);
+            RemoveMagnet = new Command(OnRemoveMagnetExecuteAsync, OnRemoveMagnetCanExecute);
         }
 
         public override string Title { get { return "Shell"; } }
 
         // TODO: Register models with the vmpropmodel codesnippet
-        // TODO: Register view model properties with the vmprop or vmpropviewmodeltomodel codesnippets
-        // TODO: Register commands with the vmcommand or vmcommandwithcanexecute codesnippets
-      
+        
         [Model]
         public MFProblem ProblemObject
         {
@@ -26,7 +38,7 @@
         }
         public static readonly PropertyData ProblemObjectProperty = RegisterProperty("ProblemObject", typeof(MFProblem));
 
-
+        // TODO: Register view model properties with the vmprop or vmpropviewmodeltomodel codesnippets
         [ViewModelToModel("ProblemObject","Name")]
         public string Name
         {
@@ -44,20 +56,62 @@
         }
         public static readonly PropertyData FilenameProperty = RegisterProperty("Filename", typeof(string));
 
-        /// <summary>
-            /// Gets or sets the property value.
-            /// </summary>
+
         [ViewModelToModel("ProblemObject")]
         public ObservableCollection<Magnet> Magnets
         {
             get { return GetValue<ObservableCollection<Magnet>>(MagnetsProperty); }
             set { SetValue(MagnetsProperty, value); }
         }
+        public static readonly PropertyData MagnetsProperty = RegisterProperty("Magnets", typeof(ObservableCollection<Magnet>));
+
+        // TODO: Register commands with the vmcommand or vmcommandwithcanexecute codesnippets
+
+
+        public Command AddMagnet { get; private set; }
+
+        private void OnAddMagnetExecuteAsync()
+        {
+            _openFileService.Filter = "FEMM solution|*.ans";
+            if (_openFileService.DetermineFile())
+            {
+                // User selected a file
+            }
+        }
+
+
+        public Command EditMagnet { get; private set; }
 
         /// <summary>
-        /// Register the Magnets property so it is known in the class.
+        /// Method to check whether the EditMagnet command can be executed.
         /// </summary>
-        public static readonly PropertyData MagnetsProperty = RegisterProperty("Magnets", typeof(ObservableCollection<Magnet>));
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnEditMagnetCanExecute()
+        {
+            return true;
+        }
+
+        private void OnEditMagnetExecuteAsync()
+        {
+            // TODO: Handle command logic here
+        }
+
+
+        public Command RemoveMagnet { get; private set; }
+
+        /// <summary>
+        /// Method to check whether the RemoveMagnet command can be executed.
+        /// </summary>
+        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
+        private bool OnRemoveMagnetCanExecute()
+        {
+            return true;
+        }
+
+        private void OnRemoveMagnetExecuteAsync()
+        {
+            // TODO: Handle command logic here
+        }
 
         protected override async Task InitializeAsync()
         {
