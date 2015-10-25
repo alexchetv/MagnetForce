@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,48 @@ namespace Shell.Models
 
         #region Properties
         // TODO: Define your custom properties here using the modelprop code snippet
+
+        /// <summary>
+        /// Gets or sets the Problem Name.
+        /// </summary>
+        public string Name
+        {
+            get { return GetValue<string>(NameProperty); }
+            set { SetValue(NameProperty, value); }
+        }
+        /// <summary>
+        /// Register the Name property so it is known in the class.
+        /// </summary>
+        public static readonly PropertyData NameProperty = RegisterProperty("Name", typeof(string), null);
+
+
+        /// <summary>
+        /// Gets or sets the Problem Filename.
+        /// </summary>
+        public string Filename
+        {
+            get { return GetValue<string>(FilenameProperty); }
+            set { SetValue(FilenameProperty, value); }
+        }
+        /// <summary>
+        /// Register the Filename property so it is known in the class.
+        /// </summary>
+        public static readonly PropertyData FilenameProperty = RegisterProperty("Filename", typeof(string), null);
+
+
+        /// <summary>
+        /// Gets or sets the Magnet Collection.
+        /// </summary>
+        public ObservableCollection<Magnet> Magnets
+        {
+            get { return GetValue<ObservableCollection<Magnet>>(MagnetsProperty); }
+            set { SetValue(MagnetsProperty, value); }
+        }
+
+        /// <summary>
+        /// Register the Magnets property so it is known in the class.
+        /// </summary>
+        public static readonly PropertyData MagnetsProperty = RegisterProperty("Magnets", typeof(ObservableCollection<Magnet>), null);
         #endregion
 
         #region Methods
