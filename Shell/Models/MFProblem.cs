@@ -79,10 +79,7 @@ namespace Shell.Models
         /// <param name="validationResults">The validation results, add additional results to this list.</param>
         protected override void ValidateFields(List<IFieldValidationResult> validationResults)
         {
-            if (Magnets.Count>1)
-            {
-                validationResults.Add(FieldValidationResult.CreateError(MagnetsProperty, "Too many magnets"));
-            }
+            
         }
 
         /// <summary>
@@ -92,6 +89,10 @@ namespace Shell.Models
         /// <param name="validationResults">The validation results, add additional results to this list.</param>
         protected override void ValidateBusinessRules(List<IBusinessRuleValidationResult> validationResults)
         {
+            if (Magnets.Count > 1)
+            {
+                validationResults.Add(BusinessRuleValidationResult.CreateError("Too many magnets"));
+            }
         }
         #endregion
     }

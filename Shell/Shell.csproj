@@ -79,6 +79,7 @@
     </Compile>
     <Compile Include="Models\Magnet.cs" />
     <Compile Include="Models\MFProblem.cs" />
+    <Compile Include="Services\AnsParser.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

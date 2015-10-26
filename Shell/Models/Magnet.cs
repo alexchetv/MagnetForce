@@ -61,11 +61,6 @@ namespace Shell.Models
 
         #region Methods
 
-        //public static Magnet CreateMagnetFromAns(string filename)
-        //{
-        //    if () return null;
-        //    var xml = XDocument.Load(filename);
-        //}
         /// <summary>
         /// Validates the field values of this object. Override this method to enable
         /// validation of field values.
@@ -73,6 +68,10 @@ namespace Shell.Models
         /// <param name="validationResults">The validation results, add additional results to this list.</param>
         protected override void ValidateFields(List<IFieldValidationResult> validationResults)
         {
+            if (Name == "fool")
+            {
+                validationResults.Add(FieldValidationResult.CreateError(NameProperty, "Name fool not allowed"));
+            }
         }
 
         /// <summary>
@@ -82,6 +81,7 @@ namespace Shell.Models
         /// <param name="validationResults">The validation results, add additional results to this list.</param>
         protected override void ValidateBusinessRules(List<IBusinessRuleValidationResult> validationResults)
         {
+
         }
         #endregion
     }

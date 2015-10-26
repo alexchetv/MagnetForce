@@ -4,8 +4,10 @@
     using System.Threading.Tasks;
     using Catel.Data;
     using Catel.Services;
+    using Shell.Services;
     using Models;
     using System.Collections.ObjectModel;
+    using System.Collections.Generic;
 
     public class MainWindowViewModel : ViewModelBase
     {
@@ -36,8 +38,8 @@
             get { return GetValue<MFProblem>(ProblemObjectProperty); }
             private set { SetValue(ProblemObjectProperty, value); }
         }
-        public static readonly PropertyData ProblemObjectProperty = RegisterProperty("ProblemObject", typeof(MFProblem));
-
+        public static readonly PropertyData ProblemObjectProperty = RegisterProperty("ProblemObject", typeof(MFProblem), new MFProblem());
+        
         // TODO: Register view model properties with the vmprop or vmpropviewmodeltomodel codesnippets
         [ViewModelToModel("ProblemObject","Name")]
         public string Name
@@ -65,6 +67,19 @@
         }
         public static readonly PropertyData MagnetsProperty = RegisterProperty("Magnets", typeof(ObservableCollection<Magnet>), () => new ObservableCollection<Magnet>());
 
+        /// <summary>
+        /// Validates the field values of this object. Override this method to enable
+        /// validation of field values.
+        /// </summary>
+        /// <param name="validationResults">The validation results, add additional results to this list.</param>
+        protected override void ValidateFields(List<IFieldValidationResult> validationResults)
+        {
+            if (Magnets.Count > 1)
+            {
+                validationResults.Add(FieldValidationResult.CreateError(MagnetsProperty,"Too many magnets"));
+            }
+        }
+
         // TODO: Register commands with the vmcommand or vmcommandwithcanexecute codesnippets
 
 
@@ -77,11 +92,9 @@
             if (_openFileService.DetermineFile())
             {
                 // User selected a file
-                var magnet = new Magnet()
-                {
-                    Name = "Magnet"+Magnets.Count,
-                    Filename = _openFileService.FileName
-                };
+                var magnet = new Magnet();
+                string errorMessage = string.Empty;
+                if (AnsParser.ParseFile(_openFileService.FileName, out magnet, out errorMessage))
                 Magnets.Add(magnet);
             }
         }

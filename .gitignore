@@ -1,3 +1,5 @@
 /output/
 /packages/
 /.vs/
+*.docx
+/FEMM_file_format.txt
