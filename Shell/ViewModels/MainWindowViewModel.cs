@@ -57,13 +57,13 @@
         public static readonly PropertyData FilenameProperty = RegisterProperty("Filename", typeof(string));
 
 
-        [ViewModelToModel("ProblemObject")]
+        [ViewModelToModel("ProblemObject","Magnets")]
         public ObservableCollection<Magnet> Magnets
         {
             get { return GetValue<ObservableCollection<Magnet>>(MagnetsProperty); }
             set { SetValue(MagnetsProperty, value); }
         }
-        public static readonly PropertyData MagnetsProperty = RegisterProperty("Magnets", typeof(ObservableCollection<Magnet>));
+        public static readonly PropertyData MagnetsProperty = RegisterProperty("Magnets", typeof(ObservableCollection<Magnet>), () => new ObservableCollection<Magnet>());
 
         // TODO: Register commands with the vmcommand or vmcommandwithcanexecute codesnippets
 
@@ -73,9 +73,16 @@
         private void OnAddMagnetExecuteAsync()
         {
             _openFileService.Filter = "FEMM solution|*.ans";
+            _openFileService.Title = "Open FEMM solution file";
             if (_openFileService.DetermineFile())
             {
                 // User selected a file
+                var magnet = new Magnet()
+                {
+                    Name = "Magnet"+Magnets.Count,
+                    Filename = _openFileService.FileName
+                };
+                Magnets.Add(magnet);
             }
         }
 

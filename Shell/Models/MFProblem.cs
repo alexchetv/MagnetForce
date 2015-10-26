@@ -67,7 +67,7 @@ namespace Shell.Models
         /// <summary>
         /// Register the Magnets property so it is known in the class.
         /// </summary>
-        public static readonly PropertyData MagnetsProperty = RegisterProperty("Magnets", typeof(ObservableCollection<Magnet>), null);
+        public static readonly PropertyData MagnetsProperty = RegisterProperty("Magnets", typeof(ObservableCollection<Magnet>), () => new ObservableCollection<Magnet>());
         
         #endregion
 
@@ -79,6 +79,10 @@ namespace Shell.Models
         /// <param name="validationResults">The validation results, add additional results to this list.</param>
         protected override void ValidateFields(List<IFieldValidationResult> validationResults)
         {
+            if (Magnets.Count>1)
+            {
+                validationResults.Add(FieldValidationResult.CreateError(MagnetsProperty, "Too many magnets"));
+            }
         }
 
         /// <summary>

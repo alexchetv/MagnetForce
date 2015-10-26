@@ -4,20 +4,39 @@
               xmlns:catel="http://catel.codeplex.com"
               Width="640"
               Height="400"
+              FontSize="18.667"
               ResizeMode="CanResize">
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="27*" />
-            <RowDefinition Height="158*" />
+            <RowDefinition Height="35" />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Button x:Name="button"
-                Width="75"
-                Margin="26,10,0,0"
+                Width="165"
+                Margin="10,0,0,7"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Top"
+                VerticalAlignment="Bottom"
                 Command="{Binding AddMagnet}"
-                Content="Add from Library" />
+                Content="Add from Library"
+                FontSize="18.667" />
+        <ListView x:Name="listView"
+                  Grid.Row="1"
+                  Width="500"
+                  Margin="0"
+                  HorizontalAlignment="Left"
+                  ItemsSource="{Binding Magnets}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="200"
+                                    DisplayMemberBinding="{Binding Name}"
+                                    Header="Name" />
+                    <GridViewColumn Width="300"
+                                    DisplayMemberBinding="{Binding Filename}"
+                                    Header="Filename" />
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 
 </catel:Window>
