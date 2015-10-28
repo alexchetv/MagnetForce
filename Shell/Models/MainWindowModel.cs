@@ -12,7 +12,7 @@ namespace Shell.Models
         /// MFProblem model which fully supports serialization, property changed notifications,
         /// backwards compatibility and error checking.
         /// </summary>
-    public class MFProblem : SavableModelBase<MFProblem>
+    public class MainWindowModel : SavableModelBase<MainWindowModel>
     {
         #region Fields
         #endregion
@@ -21,7 +21,10 @@ namespace Shell.Models
         /// <summary>
         /// Initializes a new object from scratch.
         /// </summary>
-        public MFProblem() { }
+        public MainWindowModel()
+        {
+            Magnets = new ObservableCollection<Magnet>();
+        }
 
         #endregion
 
@@ -67,7 +70,7 @@ namespace Shell.Models
         /// <summary>
         /// Register the Magnets property so it is known in the class.
         /// </summary>
-        public static readonly PropertyData MagnetsProperty = RegisterProperty("Magnets", typeof(ObservableCollection<Magnet>), () => new ObservableCollection<Magnet>());
+        public static readonly PropertyData MagnetsProperty = RegisterProperty("Magnets", typeof(ObservableCollection<Magnet>));
         
         #endregion
 
@@ -79,7 +82,11 @@ namespace Shell.Models
         /// <param name="validationResults">The validation results, add additional results to this list.</param>
         protected override void ValidateFields(List<IFieldValidationResult> validationResults)
         {
-            
+
+            if (Magnets.Count < 2)
+            {
+                validationResults.Add(FieldValidationResult.CreateError("Magnets", "We need at least two magnets."));
+            }
         }
 
         /// <summary>
@@ -89,10 +96,7 @@ namespace Shell.Models
         /// <param name="validationResults">The validation results, add additional results to this list.</param>
         protected override void ValidateBusinessRules(List<IBusinessRuleValidationResult> validationResults)
         {
-            if (Magnets.Count > 1)
-            {
-                validationResults.Add(BusinessRuleValidationResult.CreateError("Too many magnets"));
-            }
+            
         }
         #endregion
     }

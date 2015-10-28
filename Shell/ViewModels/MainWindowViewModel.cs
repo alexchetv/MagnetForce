@@ -9,6 +9,7 @@
     using System.Collections.ObjectModel;
     using System.Collections.Generic;
 
+    [InterestedIn(typeof(MagnetViewModel))]
     public class MainWindowViewModel : ViewModelBase
     {
         private readonly IUIVisualizerService _uiVisualizerService;
@@ -24,8 +25,8 @@
             _openFileService = openFileService;
 
             AddMagnet = new Command(OnAddMagnetExecuteAsync);
-            EditMagnet = new Command(OnEditMagnetExecuteAsync, OnEditMagnetCanExecute);
-            RemoveMagnet = new Command(OnRemoveMagnetExecuteAsync, OnRemoveMagnetCanExecute);
+            Magnets = ProblemObject.Magnets;
+            
         }
 
         public override string Title { get { return "Shell"; } }
@@ -33,12 +34,12 @@
         // TODO: Register models with the vmpropmodel codesnippet
         
         [Model]
-        public MFProblem ProblemObject
+        public MainWindowModel ProblemObject
         {
-            get { return GetValue<MFProblem>(ProblemObjectProperty); }
+            get { return GetValue<MainWindowModel>(ProblemObjectProperty); }
             private set { SetValue(ProblemObjectProperty, value); }
         }
-        public static readonly PropertyData ProblemObjectProperty = RegisterProperty("ProblemObject", typeof(MFProblem), new MFProblem());
+        public static readonly PropertyData ProblemObjectProperty = RegisterProperty("ProblemObject", typeof(MainWindowModel), new MainWindowModel());
         
         // TODO: Register view model properties with the vmprop or vmpropviewmodeltomodel codesnippets
         [ViewModelToModel("ProblemObject","Name")]
@@ -65,20 +66,7 @@
             get { return GetValue<ObservableCollection<Magnet>>(MagnetsProperty); }
             set { SetValue(MagnetsProperty, value); }
         }
-        public static readonly PropertyData MagnetsProperty = RegisterProperty("Magnets", typeof(ObservableCollection<Magnet>), () => new ObservableCollection<Magnet>());
-
-        /// <summary>
-        /// Validates the field values of this object. Override this method to enable
-        /// validation of field values.
-        /// </summary>
-        /// <param name="validationResults">The validation results, add additional results to this list.</param>
-        protected override void ValidateFields(List<IFieldValidationResult> validationResults)
-        {
-            if (Magnets.Count > 1)
-            {
-                validationResults.Add(FieldValidationResult.CreateError(MagnetsProperty,"Too many magnets"));
-            }
-        }
+        public static readonly PropertyData MagnetsProperty = RegisterProperty("Magnets", typeof(ObservableCollection<Magnet>));
 
         // TODO: Register commands with the vmcommand or vmcommandwithcanexecute codesnippets
 
@@ -99,38 +87,29 @@
             }
         }
 
-
-        public Command EditMagnet { get; private set; }
-
         /// <summary>
-        /// Method to check whether the EditMagnet command can be executed.
+        /// Called when a command for a view model type that the current view model is interested in has been executed. This can
+        /// be accomplished by decorating the view model with the <see cref="InterestedInAttribute"/>.
         /// </summary>
-        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
-        private bool OnEditMagnetCanExecute()
+        /// <param name="viewModel">The view model.</param>
+        /// <param name="command">The command that has been executed.</param>
+        /// <param name="commandParameter">The command parameter used during the execution.</param>
+        protected override async void OnViewModelCommandExecuted(IViewModel viewModel, ICatelCommand command, object commandParameter)
         {
-            return true;
-        }
+            // TODO: Check what command has been executed
+            var magnet = (viewModel as MagnetViewModel).MagnetObject;
 
-        private void OnEditMagnetExecuteAsync()
-        {
-            // TODO: Handle command logic here
-        }
+            if (await _messageService.ShowAsync(string.Format("Вы действительно хотите удалить объект {0}?", magnet.Name), "Внимание!",
+                        MessageButton.YesNo, MessageImage.Warning)
+                        != MessageResult.Yes)
+            {
+                return;
+            }
 
 
-        public Command RemoveMagnet { get; private set; }
+            Magnets.Remove(magnet);
 
-        /// <summary>
-        /// Method to check whether the RemoveMagnet command can be executed.
-        /// </summary>
-        /// <returns><c>true</c> if the command can be executed; otherwise <c>false</c></returns>
-        private bool OnRemoveMagnetCanExecute()
-        {
-            return true;
-        }
 
-        private void OnRemoveMagnetExecuteAsync()
-        {
-            // TODO: Handle command logic here
         }
 
         protected override async Task InitializeAsync()

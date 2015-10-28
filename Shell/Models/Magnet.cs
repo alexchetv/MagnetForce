@@ -57,6 +57,20 @@ namespace Shell.Models
         /// </summary>
         public static readonly PropertyData NameProperty = RegisterProperty("Name", typeof(string), null);
 
+        /// <summary>
+        /// Is the magnet included in Problem solution?
+        /// </summary>
+        public bool Included
+        {
+            get { return GetValue<bool>(IncludedProperty); }
+            set { SetValue(IncludedProperty, value); }
+        }
+
+        /// <summary>
+        /// Register the Included property so it is known in the class.
+        /// </summary>
+        public static readonly PropertyData IncludedProperty = RegisterProperty("Included", typeof(bool), true);
+
         #endregion
 
         #region Methods

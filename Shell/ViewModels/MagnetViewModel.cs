@@ -10,12 +10,13 @@
         public MagnetViewModel(Magnet magnet)
         {
             MagnetObject = magnet;
+            RemoveMagnet = new Command(OnRemoveMagnetExecuteAsync);
         }
 
         // TODO: Register models with the vmpropmodel codesnippet
 
         /// <summary>
-            /// Gets or sets the property value.
+          /// Gets or sets the property value.
             /// </summary>
         [Model]
         public Magnet MagnetObject
@@ -60,7 +61,29 @@
         /// </summary>
         public static readonly PropertyData FilenameProperty = RegisterProperty("Filename", typeof(string));
 
+        /// <summary>
+            /// Gets or sets the property value.
+            /// </summary>
+        [ViewModelToModel("MagnetObject")]
+        public bool Included
+        {
+            get { return GetValue<bool>(IncludedProperty); }
+            set { SetValue(IncludedProperty, value); }
+        }
+
+        /// <summary>
+        /// Register the Included property so it is known in the class.
+        /// </summary>
+        public static readonly PropertyData IncludedProperty = RegisterProperty("Included", typeof(bool));
+
         // TODO: Register commands with the vmcommand or vmcommandwithcanexecute codesnippets
+
+        public Command RemoveMagnet { get; private set; }
+
+        private void OnRemoveMagnetExecuteAsync()
+        {
+            // TODO: Handle command logic here
+        }
 
         protected override async Task InitializeAsync()
         {

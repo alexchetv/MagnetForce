@@ -6,7 +6,7 @@
               xmlns:catel="http://catel.codeplex.com"
               Width="640"
               Height="400"
-              FontSize="18.667"
+              FontSize="16"
               ResizeMode="CanResize">
 
     <Grid>
@@ -20,32 +20,14 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
                 Command="{Binding AddMagnet}"
-                Content="Add magnet"
-                FontSize="18.667" />
-        <!--<ListView x:Name="listView"
-                  Grid.Row="1"
-                  Width="500"
-                  Margin="0"
-                  HorizontalAlignment="Left"
-                  ItemsSource="{Binding Magnets}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Width="200"
-                                    DisplayMemberBinding="{Binding Name}"
-                                    Header="Name" />
-                    <GridViewColumn Width="300"
-                                    DisplayMemberBinding="{Binding Filename}"
-                                    Header="Filename" />
-                </GridView>
-            </ListView.View>
-        </ListView>-->
+                Content="Add magnet"/>
         <ItemsControl Grid.Row="1" ItemsSource="{Binding Magnets}">
 
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
                         <Views:MagnetControl DataContext="{Binding}" />
-                        <Line Height="2" />
+                        <Line Height="1" />
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
